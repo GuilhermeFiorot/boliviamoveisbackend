@@ -2,7 +2,7 @@
 
 This is a Flask application for the online shop called bolivia moveis
 
-## Prerequisites
+## Requirements
 
 - Python 3.8 or higher
 - pip (Python package installer)
@@ -41,7 +41,7 @@ Start the Flask application
 flask run
 ```
 
-### 5. Projet Structure
+### 5. Project Structure
 This tree represents the directories this repository have
 ```
 boliviamoveisbackend/
