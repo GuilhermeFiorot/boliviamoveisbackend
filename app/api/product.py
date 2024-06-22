@@ -3,6 +3,7 @@ from flask import request
 from flask_jwt_extended import jwt_required  # Add this line
 from ..services.product_service import get_all_products, get_product_by_id, create_product, update_product, delete_product
 from ..schemas.product import ProductSchema
+from ..constants import PRODUCT_NOT_FOUND
 
 product_schema = ProductSchema()
 products_schema = ProductSchema(many=True)
@@ -24,14 +25,14 @@ class ProductResource(Resource):
     def get(self, id):
         product = get_product_by_id(id)
         if product is None:
-            return {"message": "Product not found"}, 404
+            return {"message": PRODUCT_NOT_FOUND}, 404
         return product_schema.dump(product), 200
 
     @jwt_required()
     def put(self, id):
         product = get_product_by_id(id)
         if product is None:
-            return {"message": "Product not found"}, 404
+            return {"message": PRODUCT_NOT_FOUND}, 404
         data = request.get_json()
         product = update_product(product, data)
         return product_schema.dump(product), 200
@@ -40,6 +41,6 @@ class ProductResource(Resource):
     def delete(self, id):
         product = get_product_by_id(id)
         if product is None:
-            return {"message": "Product not found"}, 404
+            return {"message": PRODUCT_NOT_FOUND}, 404
         delete_product(product)
         return {"message": "Product deleted"}, 204

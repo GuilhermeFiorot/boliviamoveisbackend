@@ -11,7 +11,7 @@ def create_app():
     db.init_app(app)
     migrate.init_app(app, db)
 
-    jwt = JWTManager(app)  # Initialize JWT
+    JWTManager(app)
 
     app.register_blueprint(api_blueprint, url_prefix='/api')
 

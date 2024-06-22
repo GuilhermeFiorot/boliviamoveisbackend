@@ -1,8 +1,8 @@
+import math
 import json
 from flask import url_for
-from app.models.user import User
 from app.models.product import Product
-from app.services.user_service import create_user
+from app.services.user_service import create_user, get_user_by_email
 
 def create_test_user():
     user_data = {
@@ -16,9 +16,12 @@ def create_test_user():
         'telefone': '27999999999',
         'cpf': '12345678900',
     }
-    return create_user(user_data)
+    existing_user = get_user_by_email(user_data['email'])
+    if not existing_user:
+        return create_user(user_data)
+    return existing_user
 
-def create_test_product():
+def create_test_product(session):
     product_data = {
         'name': 'Test Product',
         'description': 'This is a test product.',
@@ -26,6 +29,8 @@ def create_test_product():
         'price': 100.0
     }
     product = Product(**product_data)
+    session.add(product)
+    session.commit()
     return product
 
 def get_access_token(client, email, password):
@@ -38,12 +43,12 @@ def get_access_token(client, email, password):
 
 def test_add_item_to_cart(client, session):
     user = create_test_user()
-    product = create_test_product()
-    session.add(product)
     session.commit()
 
     access_token = get_access_token(client, user.email, 'testpassword')
     headers = {'Authorization': f'Bearer {access_token}'}
+
+    product = create_test_product(session)
 
     response = client.post(
         url_for('api.cartresource'),
@@ -57,12 +62,12 @@ def test_add_item_to_cart(client, session):
 
 def test_get_cart(client, session):
     user = create_test_user()
-    product = create_test_product()
-    session.add(product)
     session.commit()
 
     access_token = get_access_token(client, user.email, 'testpassword')
     headers = {'Authorization': f'Bearer {access_token}'}
+
+    product = create_test_product(session)
 
     client.post(
         url_for('api.cartresource'),
@@ -76,16 +81,16 @@ def test_get_cart(client, session):
     assert len(data['items']) == 1
     assert data['items'][0]['product_id'] == product.id
     assert data['items'][0]['quantity'] == 2
-    assert data['total_value'] == product.price * 2
+    assert math.isclose(data['total_value'], product.price * 2)
 
 def test_remove_item_from_cart(client, session):
     user = create_test_user()
-    product = create_test_product()
-    session.add(product)
     session.commit()
 
     access_token = get_access_token(client, user.email, 'testpassword')
     headers = {'Authorization': f'Bearer {access_token}'}
+
+    product = create_test_product(session)
 
     client.post(
         url_for('api.cartresource'),
@@ -103,4 +108,4 @@ def test_remove_item_from_cart(client, session):
     response = client.get(url_for('api.cartresource'), headers=headers)
     data = response.get_json()
     assert len(data['items']) == 0
-    assert data['total_value'] == 0.0
+    assert math.isclose(data['total_value'], 0.0)

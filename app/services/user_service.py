@@ -12,7 +12,7 @@ def get_user_by_email(email):
     return User.query.filter_by(email=email).first()
 
 def create_user(data):
-    data['password'] = generate_password_hash(data['password'])  # Hash the password
+    data['password'] = generate_password_hash(data['password'])
     new_user = User(**data)
     db.session.add(new_user)
     db.session.commit()
@@ -20,7 +20,7 @@ def create_user(data):
 
 def update_user(user, data):
     if 'password' in data:
-        data['password'] = generate_password_hash(data['password'])  # Hash the password if updated
+        data['password'] = generate_password_hash(data['password'])
     for key, value in data.items():
         setattr(user, key, value)
     db.session.commit()

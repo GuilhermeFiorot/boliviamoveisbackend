@@ -30,20 +30,15 @@ def session(db, app):
         connection = db.engine.connect()
         # Inicia uma transação
         transaction = connection.begin()
-        # Define as opções de conexão
-        options = dict(bind=connection, binds={})
         # Cria uma sessão escopada
-        Session = scoped_session(sessionmaker(bind=connection))
-
+        session_factory = scoped_session(sessionmaker(bind=connection))
         # Atribui no db.session
-        db.session = Session
-
+        db.session = session_factory
         # Fornece para testes
-        yield Session
-
+        yield session_factory
         # Após os testes, faz rollback
         transaction.rollback()
         # Fecha a conexão
         connection.close()
         # Remove a sessão
-        Session.remove()
+        session_factory.remove()
