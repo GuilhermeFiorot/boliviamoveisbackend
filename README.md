@@ -42,7 +42,8 @@ flask run
 ```
 
 ### 5. Projet Structure
-
+This tree represents the directories this repository have
+```
 boliviamoveisbackend/
 ├── app/
 │   ├── __init__.py
@@ -84,6 +85,7 @@ boliviamoveisbackend/
 ├── requirements.txt
 ├── run.py
 └── README.md
+```
 
 ### 6. Run Tests
 To run the tests, use the following command
