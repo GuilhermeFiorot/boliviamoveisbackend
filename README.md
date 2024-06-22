@@ -15,8 +15,8 @@ This is a Flask application for the online shop called bolivia moveis
 Clone this repository to your local machine:
 
 ```bash
-git clone https://github.com/yourusername/my-flask-project.git
-cd my-flask-project
+git clone https://github.com/GuilhermeFiorot/boliviamoveisbackend.git
+cd boliviamoveisbackend
 ```
 
 ### 2. Virtual Environment (Optional)
