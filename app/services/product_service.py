@@ -5,7 +5,7 @@ def get_all_products():
     return Product.query.all()
 
 def get_product_by_id(product_id):
-    return Product.query.get(product_id)
+    return db.session.get(Product, product_id)
 
 def create_product(data):
     new_product = Product(**data)

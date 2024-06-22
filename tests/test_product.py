@@ -1,6 +1,21 @@
 import json
 from flask import url_for
 from app.models.product import Product
+from app.services.user_service import create_user
+
+def create_test_user():
+    user_data = {
+        'name': 'testuser',
+        'email': 'testuser@example.com',
+        'password': 'testpassword',
+        'endereco': 'Rua 1, 123',
+        'cidade': 'Espirito Santo',
+        'cep': '29100000',
+        'pais': 'Brasil',
+        'telefone': '27999999999',
+        'cpf': '12345678900',
+    }
+    return create_user(user_data)
 
 def create_test_product(session):
     product_data = {
@@ -23,6 +38,12 @@ def get_access_token(client, email, password):
     return data['access_token']
 
 def test_add_product(client, session):
+    user = create_test_user()
+    session.commit()
+
+    access_token = get_access_token(client, user.email, 'testpassword')
+    headers = {'Authorization': f'Bearer {access_token}'}
+
     product_data = {
         'name': 'New Product',
         'description': 'This is a new product.',
@@ -31,7 +52,8 @@ def test_add_product(client, session):
     }
     response = client.post(
         url_for('api.productlistresource'),
-        json=product_data
+        json=product_data,
+        headers=headers
     )
     assert response.status_code == 201
     data = response.get_json()
@@ -39,9 +61,15 @@ def test_add_product(client, session):
     assert data['price'] == product_data['price']
 
 def test_get_product(client, session):
+    user = create_test_user()
+    session.commit()
+
+    access_token = get_access_token(client, user.email, 'testpassword')
+    headers = {'Authorization': f'Bearer {access_token}'}
+
     product = create_test_product(session)
 
-    response = client.get(url_for('api.productresource', id=product.id))
+    response = client.get(url_for('api.productresource', id=product.id), headers=headers)
     assert response.status_code == 200
     data = response.get_json()
     assert data['name'] == product.name

@@ -6,7 +6,7 @@ def get_all_users():
     return User.query.all()
 
 def get_user_by_id(user_id):
-    return User.query.get(user_id)
+    return db.session.get(User, user_id)
 
 def get_user_by_email(email):
     return User.query.filter_by(email=email).first()
