@@ -1,0 +1,10 @@
+Flask
+Flask-SQLAlchemy
+Flask-Migrate
+Flask-RESTful
+python-dotenv
+flask-jwt-extended
+pytest
+pytest-flask
+flask-testing
+marshmallow
