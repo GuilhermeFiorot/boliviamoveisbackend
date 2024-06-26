@@ -9,3 +9,4 @@ pytest-flask
 flask-testing
 marshmallow
 flask-cors
+gunicorn
