@@ -8,12 +8,12 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . /app/
 
-EXPOSE 8000
+EXPOSE 8080
 
 # Defina a variável de ambiente FLASK_APP
 ENV FLASK_APP=run.py
 
 # Comando para iniciar o Flask
-CMD ["flask", "run", "--host=0.0.0.0", "--port=8000"]
+CMD ["python", "run.py"]
 
 LABEL org.opencontainers.image.source https://github.com/GuilhermeFiorot/boliviamoveisbackend
