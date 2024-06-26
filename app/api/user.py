@@ -1,7 +1,7 @@
 from flask_restful import Resource
 from flask import request
 from flask_jwt_extended import jwt_required
-from ..services.user_service import get_all_users, get_user_by_id, create_user, update_user, delete_user
+from ..services.user_service import get_all_users, get_user_by_id, get_user_by_email, update_user, delete_user
 from ..schemas.user import UserSchema
 from ..constants import USER_NOT_FOUND
 
