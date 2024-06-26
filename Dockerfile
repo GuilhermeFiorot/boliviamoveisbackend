@@ -20,7 +20,7 @@ COPY . /app/
 EXPOSE 5000
 
 # Use gunicorn as the entrypoint, adjust the number of workers and threads as needed
-CMD ["gunicorn", "--workers=3", "--threads=3", "-b :5000", "app:app"]
+CMD ["python3", "-m" , "flask", "run" "-b :5000", "app:app"]
 
 # Optional: Add a label to link back to the source
 LABEL org.opencontainers.image.source https://github.com/GuilhermeFiorot/boliviamoveisbackend
