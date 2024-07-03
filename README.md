@@ -2,6 +2,19 @@
 
 This is a Flask application for the online shop called bolivia moveis
 
+## Documents
+  ### Sonar
+     ```bash
+     https://sonarcloud.io/project/overview?id=GuilhermeFiorot_boliviamoveisbackend
+     ```
+  ### Analise do projeto
+     ```bash
+     https://docs.google.com/document/d/1AZVl_Q4hy1Ir8vCDW3SGxeT5K4hf-fQ1C3T9rUohGqA/edit
+     ```
+  ### FrontEnd
+     ```bash
+     https://github.com/EmanuelHSC/boliviamoveis
+     ```
 ## Requirements
 
 - Python 3.8 or higher
