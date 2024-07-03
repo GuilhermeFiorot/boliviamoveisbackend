@@ -9,7 +9,6 @@ product_schema = ProductSchema()
 products_schema = ProductSchema(many=True)
 
 class ProductListResource(Resource):
-    @jwt_required()
     def get(self):
         products = get_all_products()
         return products_schema.dump(products), 200

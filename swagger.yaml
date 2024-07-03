@@ -1,0 +1,237 @@
+swagger: "2.0"
+info:
+  description: "API documentation for the Bolivia Moveis Backend."
+  version: "1.0.0"
+  title: "Bolivia Moveis Backend API"
+host: "localhost:8080"
+basePath: "/api"
+schemes:
+- "http"
+securityDefinitions:
+  Bearer:
+    type: "apiKey"
+    name: "Authorization"
+    in: "header"
+    description: "Enter 'Bearer' [space] and then your token in the text input below.\n\nExample: \"Bearer abcdef12345\""
+paths:
+  /register:
+    post:
+      tags:
+      - "User"
+      summary: "Register a new user"
+      description: ""
+      operationId: "registerUser"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "User object that needs to be added"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            email:
+              type: "string"
+            password:
+              type: "string"
+            name:
+              type: "string"
+      responses:
+        201:
+          description: "User created"
+        400:
+          description: "Invalid input"
+
+  /login:
+    post:
+      tags:
+      - "User"
+      summary: "User login"
+      description: ""
+      operationId: "loginUser"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "User credentials"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            email:
+              type: "string"
+            password:
+              type: "string"
+      responses:
+        200:
+          description: "Successful login"
+        401:
+          description: "Invalid credentials"
+
+  /v1/forgot_password:
+    post:
+      tags:
+      - "User"
+      summary: "Forgot password"
+      description: ""
+      operationId: "forgotPassword"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "User email and new password"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            email:
+              type: "string"
+            password:
+              type: "string"
+      responses:
+        200:
+          description: "Password updated"
+        404:
+          description: "User not found"
+
+  /products:
+    get:
+      tags:
+      - "Product"
+      summary: "List all products"
+      description: ""
+      operationId: "listProducts"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Product"
+
+  /products/{id}:
+    get:
+      tags:
+      - "Product"
+      summary: "Get product details"
+      description: ""
+      operationId: "getProduct"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/Product"
+        404:
+          description: "Product not found"
+
+  /cart:
+    post:
+      tags:
+      - "Cart"
+      summary: "Add item to cart"
+      description: ""
+      operationId: "addItemToCart"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Cart item to add"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            product_id:
+              type: "integer"
+              format: "int64"
+            quantity:
+              type: "integer"
+              format: "int64"
+      security:
+      - Bearer: []
+      responses:
+        200:
+          description: "Item added to cart"
+        400:
+          description: "Invalid input"
+
+definitions:
+  User:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      email:
+        type: "string"
+      name:
+        type: "string"
+      password:
+        type: "string"
+      isAdmin:
+        type: "boolean"
+      endereco:
+        type: "string"
+      cidade:
+        type: "string"
+      cep:
+        type: "string"
+      pais:
+        type: "string"
+      telefone:
+        type: "string"
+      cpf:
+        type: "string"
+
+  Product:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      name:
+        type: "string"
+      description:
+        type: "string"
+      image:
+        type: "string"
+      price:
+        type: "number"
+        format: "float"
+
+  CartItem:
+    type: "object"
+    properties:
+      product_id:
+        type: "integer"
+        format: "int64"
+      quantity:
+        type: "integer"
+        format: "int64"
+      single_value:
+        type: "number"
+        format: "float"
+      total_value:
+        type: "number"
+        format: "float"
